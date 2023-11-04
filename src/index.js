@@ -8,6 +8,6 @@ app.get("/", (req, res) => {
   return res.send("ok");
 });
 app.listen(serverConfig.PORT, () => {
-  console.log(`listening on port${serverConfig.PORT}`);
+  console.log(`listening on port ${serverConfig.PORT}`);
   Logger.info("successfully started server", "root", {});
 });
