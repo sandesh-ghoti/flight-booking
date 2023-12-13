@@ -1,5 +1,5 @@
-const CrudRepository = require("./crud-repository");
-const { City } = require("./../models");
+const CrudRepository = require("./crudRepository");
+const { Booking } = require("./../models");
 
 class BookingRepository extends CrudRepository {
   constructor() {
