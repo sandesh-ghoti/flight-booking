@@ -4,6 +4,7 @@ const AppError = require("../utils/errors/appError");
 const bookingRepository = new BookingRepository();
 const { StatusCodes } = require("http-status-codes");
 const { FLIGHT_SERVER_ADDRESS } = require("../config/serverConfig");
+const db = require("../models");
 const {
   INITIATED,
   BOOKED,
@@ -11,6 +12,7 @@ const {
   PENDING,
 } = require("../utils/common/bookingStatus");
 async function createBooking(data) {
+  const transaction = await db.sequelize.transaction();
   try {
     //verify flightid, userId and check if totalSeats>noOfseats or not
     const res = await axios.get(
@@ -32,9 +34,11 @@ async function createBooking(data) {
       `${FLIGHT_SERVER_ADDRESS}/api/v1/flight/updateSeats/${data.flightId}`,
       { dec: true, noOfSeats: data.noOfSeats }
     );
+    await transaction.commit();
     return updatedres.data;
   } catch (error) {
     //if flight not found then it will throw error so use status and dada from error to raise new apperror
+    await transaction.rollback();
     if (
       error &&
       error.response &&
