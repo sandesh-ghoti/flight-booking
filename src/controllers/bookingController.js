@@ -62,7 +62,7 @@ async function makePayment(req, res) {
       bookingId: req.body.bookingId,
       userId: req.body.userId,
       totalCost: req.body.totalCost,
-      recipientEmail: req.body.recipientEmail,
+      recipientEmail: req.user.email,
     });
     SuccessResponse.data = bookings;
     return res.status(StatusCodes.OK).json(SuccessResponse);

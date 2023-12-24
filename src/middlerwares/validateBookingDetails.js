@@ -14,7 +14,7 @@ function validatePaymentDetails(req, res, next) {
     !req.body.totalCost ||
     !req.body.userId ||
     !req.body.bookingId ||
-    !req.body.recipientEmail
+    !req.user.email
   ) {
     ErrorResponse.message = "something went wrong while making payment";
     ErrorResponse.error = "Incomplate booking payment request";

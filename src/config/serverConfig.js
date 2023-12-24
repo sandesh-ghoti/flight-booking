@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config("../.env");
+dotenv.config({ path: __dirname + "/../.env" });
 module.exports = {
   PORT: process.env.PORT,
   FLIGHT_SERVER_ADDRESS: process.env.FLIGHT_SERVER_ADDRESS,

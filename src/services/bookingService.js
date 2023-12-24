@@ -166,7 +166,7 @@ async function makePayment(data) {
 }
 async function cancelOldBookings() {
   try {
-    const time = new Date(Date.now() - BOOKING_EXPIRE_TIME);
+    const time = new Date(new Date() - BOOKING_EXPIRE_TIME);
     const res = await bookingRepository.getOldBookings(time);
     //cancel each old booking
     res.forEach(async (booking) => {

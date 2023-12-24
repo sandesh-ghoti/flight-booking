@@ -4,7 +4,7 @@ const { BookingService } = require("../services");
 
 function scheduleCrons() {
   // * * * * * (seconds, minutes,hour, days, weeks)
-  cron.schedule("*/5 * * * *", async () => {
+  cron.schedule("*/10 * * * *", async () => {
     await BookingService.cancelOldBookings();
   });
 }
