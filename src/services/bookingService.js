@@ -44,25 +44,13 @@ async function createBooking(data) {
     console.log(updatedres.data.data);
     return updatedres.data.data;
   } catch (error) {
-    console.log(error);
     //if flight not found then it will throw error so use status and dada from error to raise new apperror
     await transaction.rollback();
-    if (
-      error &&
-      error.response &&
-      error.response.status &&
-      error.response.status == StatusCodes.NOT_FOUND
-    ) {
-      throw new AppError(
-        [
-          "something wrong in booking service" +
-            ` flight ${data.flightId} not found`,
-        ],
-        StatusCodes.NOT_FOUND
-      );
+    if (error instanceof AppError) {
+      throw error;
     }
     throw new AppError(
-      ["something wrong in booking service " + error.message],
+      ["error while creating booking " + error.name + error.message],
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -95,13 +83,12 @@ async function cancelBooking(bookingId) {
     await transaction.commit();
     return booking;
   } catch (error) {
-    console.log(error);
     await transaction.rollback();
     if (error instanceof AppError) {
       throw error;
     }
     throw new AppError(
-      [error.name, error.message],
+      ["while canceling booking " + error.name + error.message],
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -111,7 +98,6 @@ async function makePayment(data) {
   const transaction = await db.sequelize.transaction();
   try {
     let booking = await bookingRepository.get(data.bookingId, transaction);
-    console.log(booking.status, booking.id);
     if (booking.userId != data.userId) {
       throw new AppError(
         ["user of booking and current user not match"],
@@ -153,13 +139,12 @@ async function makePayment(data) {
     await transaction.commit();
     return booking;
   } catch (error) {
-    console.log("payment error", error);
     await transaction.rollback();
     if (error instanceof AppError) {
       throw error;
     }
     throw new AppError(
-      [error.name, error.message],
+      ["while making payment " + error.name + error.message],
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }

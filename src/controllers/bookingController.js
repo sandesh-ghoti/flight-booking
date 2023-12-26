@@ -5,7 +5,7 @@ async function createBooking(req, res) {
   try {
     const book = await BookingService.createBooking({
       flightId: req.body.flightId,
-      recipientEmail: req.body.recipientEmail,
+      userId: req.body.user.id,
       noOfSeats: req.body.noOfSeats,
     });
     SuccessResponse.data = book;
@@ -27,7 +27,7 @@ async function getAllBooking(req, res) {
 }
 async function getBooking(req, res) {
   try {
-    const bookings = await BookingService.getAllBooking(req.params.id);
+    const bookings = await BookingService.getBooking(req.params.id);
     SuccessResponse.data = bookings;
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
@@ -60,11 +60,11 @@ async function makePayment(req, res) {
   try {
     const bookings = await BookingService.makePayment({
       bookingId: req.body.bookingId,
-      userId: req.body.userId,
+      userId: req.body.user.id,
       totalCost: req.body.totalCost,
-      recipientEmail: req.user.email,
+      recipientEmail: req.body.user.email,
     });
-    SuccessResponse.data = bookings;
+    SuccessResponse.data = true;
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;

@@ -1,7 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 const { ErrorResponse } = require("../utils/common");
 function validateBookingDetails(req, res, next) {
-  if (!req.body.flightId || !req.body.userId || !req.body.noOfSeats) {
+  console.log("validating booking details");
+  if (!req.body.flightId || !req.body.user.id || !req.body.noOfSeats) {
     ErrorResponse.message =
       "something went wrong while creating booking create request";
     ErrorResponse.error = "Incomplate booking create request";
@@ -12,9 +13,9 @@ function validateBookingDetails(req, res, next) {
 function validatePaymentDetails(req, res, next) {
   if (
     !req.body.totalCost ||
-    !req.body.userId ||
+    !req.body.user.id ||
     !req.body.bookingId ||
-    !req.user.email
+    !req.body.user.email
   ) {
     ErrorResponse.message = "something went wrong while making payment";
     ErrorResponse.error = "Incomplate booking payment request";
