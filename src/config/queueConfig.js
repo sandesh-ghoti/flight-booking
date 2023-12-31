@@ -1,13 +1,15 @@
 const amqplib = require("amqplib");
 let channel, connection;
+const {RABBITMQ_ADDRESS}=require('../config/serverConfig')
 async function connectQueue() {
   try {
-    connection = await amqplib.connect("amqp://localhost");
+    connection = await amqplib.connect(`amqp://${RABBITMQ_ADDRESS}`);
     channel = await connection.createChannel();
 
     await channel.assertQueue("Airline-notification-queue");
   } catch (error) {
     console.log(error);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 }
 
