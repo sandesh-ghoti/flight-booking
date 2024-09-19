@@ -1,6 +1,14 @@
 FROM node
-WORKDIR /development/nodejs/booking-service
+
+WORKDIR /developer/nodejs/booking-service
+
+COPY package.json .
+RUN npm install --omit=dev
+
 COPY . .
-RUN npm install nodemon
-RUN npm ci
-CMD ["npx", "nodemon","./src"]
+
+RUN curl -o wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+
+RUN chmod +x wait-for-it.sh
+
+CMD ["./wait-for-it.sh", "rabbitmq:5672", "--", "npm", "run", "dev"]

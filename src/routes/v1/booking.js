@@ -14,6 +14,6 @@ router.post(
   bookingMiddleware.validatePaymentDetails,
   BookingController.makePayment
 );
-router.post("/cancelOldBooking", BookingController.cancelOldBooking);
-router.post("/cancelBooking/:id", BookingController.cancelBooking);
+router.delete("/cancelOldBooking", BookingController.cancelOldBooking);
+router.delete("/cancelBooking/:id", BookingController.cancelBooking);
 module.exports = router;

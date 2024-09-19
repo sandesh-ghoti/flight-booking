@@ -3,7 +3,7 @@ let channel, connection;
 const {RABBITMQ_ADDRESS}=require('../config/serverConfig')
 async function connectQueue() {
   try {
-    connection = await amqplib.connect(`amqp://${RABBITMQ_ADDRESS}`);
+    connection = await amqplib.connect(`${RABBITMQ_ADDRESS}`);
     channel = await connection.createChannel();
 
     await channel.assertQueue("Airline-notification-queue");
